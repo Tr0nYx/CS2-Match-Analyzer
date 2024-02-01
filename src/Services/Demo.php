@@ -176,7 +176,6 @@ class Demo implements LoggerAwareInterface
         } else {
             $match = $this->entityManager->getRepository(Matches::class)->find($message->getMatchId());
         }
-        dump($match->getId());
 
         $process = new Process(['node', 'custom_assets/node/download-demo.js', $match->getShareCode(), $match->getId()],
             $this->projectDir,
@@ -189,7 +188,7 @@ class Demo implements LoggerAwareInterface
         preg_match('/Game played at:\s(.*)/', $process->getOutput(), $matches);
         if (!empty($matches)) {
             $timestamp = (int)trim($matches[1]);
-            $date = new \DateTime();
+            $date = new \DateTimeImmutable();
             $date->setTimestamp($timestamp);
             $match->setMatchTime($date);
         }
@@ -225,8 +224,8 @@ class Demo implements LoggerAwareInterface
 
     /**
      * @param SaveDemo $message
+     * @param OutputInterface|null $output
      * @return int
-     * @throws \Exception
      */
     public function saveDemo(SaveDemo $message, ?OutputInterface $output = null): int
     {
@@ -235,6 +234,7 @@ class Demo implements LoggerAwareInterface
                 ['downloaded' => true, 'analyzed' => true],
                 ['updatedAt' => 'ASC']
             );
+            /** @var Matches $oMatch */
             foreach ($aMatch as $oMatch) {
                 $this->jsonImporter->run($oMatch->getId());
                 $oMatch->setUpdatedAt(new \DateTime());
