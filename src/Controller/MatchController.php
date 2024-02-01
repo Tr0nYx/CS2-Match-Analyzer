@@ -7,11 +7,9 @@ namespace App\Controller;
 use App\Entity\Matches;
 use App\Repository\MatchRepository;
 use App\Repository\MatchUserScoreboardRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -34,7 +32,6 @@ class MatchController extends AbstractController
     #[Template()]
     public function index(): array
     {
-        /** @var Matches $match */
         $match = $this->matchRepository->findBy([], ['createdAt' => 'DESC'], 1)[0];
         $scoreboard = $match->getScoreboard();
 
@@ -43,17 +40,17 @@ class MatchController extends AbstractController
 
     /**
      * @param Matches $match
-     * @return Response
-     * @throws NonUniqueResultException
+     * @return array
      */
     #[Route("/match/{match_id}", name: "match.detail")]
-    public function detail(#[Mapentity(id: 'match_id')] Matches $match): Response
+    #[Template('match/detail.html.twig')]
+    public function detail(#[Mapentity(id: 'match_id')] Matches $match): array
     {
         $orderedMatch = $this->matchUserScoreboardRepository->findByMatchIdSorted(
             $match->getId()
         );
 
-        return $this->render('match/detail.html.twig', ['match' => $match, 'scoreboard' => $orderedMatch]);
+        return ['match' => $match, 'scoreboard' => $orderedMatch];
     }
 
     public function SteamID3SteamID64(

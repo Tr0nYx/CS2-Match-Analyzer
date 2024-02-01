@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Repository\MatchRepository;
 use App\Repository\UserRepository;
 use App\Repository\UserSkinRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -29,7 +29,8 @@ class IndexController extends AbstractController
     }
 
     #[Route(path: '/', name: 'index')]
-    public function index(): Response
+    #[Template('index/index.html.twig')]
+    public function index(): array
     {
         $dailyMatches = $this->matchRepository->getMatchStats();
         $matchCount = $this->matchRepository->getCount();
@@ -37,16 +38,17 @@ class IndexController extends AbstractController
         $userCount = $this->userRepository->getCount();
         $inventoryCount = $this->userSkin->getCount();
 
-        return $this->render('index/index.html.twig', [
+        return [
             'dailyMatches' => $dailyMatches,
             'matchCount' => $matchCount,
             'userCount' => $userCount,
             'inventoryCount' => $inventoryCount,
-        ]);
+        ];
     }
 
     #[Route('/latest_matches', name: 'latest_matches')]
-    public function latestMatches(): Response
+    #[Template('index/matches.html.twig')]
+    public function latestMatches(): array
     {
         $latestMatches = $this->matchRepository->findBy(
             ['saved' => true],
@@ -54,18 +56,15 @@ class IndexController extends AbstractController
             10
         );
 
-        return $this->render('index/matches.html.twig', [
-            'latestmatches' => $latestMatches,
-        ]);
+        return ['latestmatches' => $latestMatches];
     }
 
     #[Route('/latest_users', name: 'latest_users')]
-    public function latestUsers(): Response
+    #[Template('index/users.html.twig')]
+    public function latestUsers(): array
     {
         $newusers = $this->userRepository->findLatestUsers();
 
-        return $this->render('index/users.html.twig', [
-            'newusers' => $newusers,
-        ]);
+        return ['newusers' => $newusers];
     }
 }

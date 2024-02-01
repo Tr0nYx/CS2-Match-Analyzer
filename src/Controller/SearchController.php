@@ -36,10 +36,9 @@ class SearchController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @return void
      */
-    #[
-        Route(path: '/result', name: 'index')]
+    #[Route(path: '/result', name: 'index')]
     public function index()
     {
     }

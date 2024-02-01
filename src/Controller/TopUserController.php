@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\MatchUserScoreboard;
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TopUserController extends AbstractController
@@ -18,15 +15,14 @@ class TopUserController extends AbstractController
     }
 
     #[Route('/top/user', name: 'top_user')]
-    public function index(): Response
+    #[Template('top_user/index.html.twig')]
+    public function index(): array
     {
         $rating = $this->userRepository->getAllUserAvgValues();
 
         uasort($rating, [$this, 'cmp']);
 
-        return $this->render('top_user/index.html.twig', [
-            'ratings' => $rating,
-        ]);
+        return ['ratings' => $rating];
     }
 
     private function cmp($a, $b)

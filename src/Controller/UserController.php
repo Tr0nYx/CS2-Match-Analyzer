@@ -14,6 +14,7 @@ use App\Services\UserStatistics;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,10 +45,11 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/user/{user_steam_id}/settings', name: 'user.settings.detail', methods: ['GET', 'POST'])]
+    #[Template('user/settings.html.twig')]
     public function showUserSettings(
         #[MapEntity(mapping: ['user_steam_id' => 'steamId'])] User $user,
         Request $request
-    ): Response {
+    ): array {
         $form = $this->createForm(UserSettingsType::class, $user);
         $form->handleRequest($request);
 
@@ -72,23 +74,23 @@ class UserController extends AbstractController
             //return $this->redirectToRoute('task_success');
         }
 
-        return $this->render('user/settings.html.twig', [
+        return [
             'form' => $form,
             'themeform' => $themeform,
             'user' => $user,
-        ]);
+        ];
     }
 
     /**
-     * @return Response
+     * @return array
      * @throws Exception
      */
     #[Route(path: '/users', methods: ['GET', 'HEAD'])]
-    public function index(): Response
+    #[Template('user/list.html.twig')]
+    public function index(): array
     {
         $userstats = [];
         $steamIds = [];
-        /** @var User[] $users */
         $users = $this->userRepository->findAll();
         foreach ($users as $user) {
             if (($user->getCommunityvisibilitystate() === 3 && $user->getUpdatedAt() < new \DateTime('-24 hours'))
@@ -99,7 +101,7 @@ class UserController extends AbstractController
         }
         $this->userStatistics->getUserSummary($steamIds);
 
-        return $this->render('user/list.html.twig', ['users' => $users, 'stats' => $userstats]);
+        return ['users' => $users, 'stats' => $userstats];
     }
 
     /**
@@ -109,7 +111,8 @@ class UserController extends AbstractController
      */
     #[Route(path: '/user/{steamid}', name: 'user.detail', methods: ['GET', 'HEAD'])]
     #[Cache(maxage: 3600, lastModified: 'user.getUpdatedAt()', etag: 'user.getLastDemoFound().getTimestamp()')]
-    public function showUser(#[MapEntity(mapping: ['steamid' => 'steamId'])] User $user): Response
+    #[Template('user/index.html.twig')]
+    public function showUser(#[MapEntity(mapping: ['steamid' => 'steamId'])] User $user): array
     {
         $userstats = $this->userStatistics->getStats($user);
         /** @var MatchUserScoreboard[] $matches */
@@ -121,20 +124,17 @@ class UserController extends AbstractController
         //$weaponstats = $this->getWeaponStats($user);
         $avgStats = $this->userRepository->getUserAvgValues();
 
-        return $this->render(
-            'user/index.html.twig',
-            [
-                'player' => $user,
-                'stats' => $stats,
-                'avgstats' => $avgStats,
-                'matches' => $matches,
-                'mates' => $mates,
-                'steamstats' => json_decode(json_encode($userstats), true),
-            ]
-        );
+        return [
+            'player' => $user,
+            'stats' => $stats,
+            'avgstats' => $avgStats,
+            'matches' => $matches,
+            'mates' => $mates,
+            'steamstats' => json_decode(json_encode($userstats), true),
+        ];
     }
 
-    private function getWeaponStats(User $user)
+    private function getWeaponStats(User $user): void
     {
         $accuracystats = $this->userRepository->getAccuracyStats($user);
         $damagestats = $this->userRepository->getDamageStats($user);
@@ -149,7 +149,7 @@ class UserController extends AbstractController
         $this->buildStats($headshotstats, 'headshots');
     }
 
-    private function buildStats($statsArray, $definition)
+    private function buildStats($statsArray, $definition): void
     {
         foreach ($statsArray as $array) {
             if (!isset($this->stats['weapon'])) {
@@ -162,11 +162,11 @@ class UserController extends AbstractController
 
     /**
      * @param int $steamid
-     * @return Response
-     * @throws Exception
+     * @return User[]
      */
     #[Route(path: '/user/{steamid}/matches', name: 'user.matches.detail', methods: ['GET', 'HEAD'])]
-    public function showUserMatches(int $steamid): Response
+    #[Template('user/index.html.twig')]
+    public function showUserMatches(int $steamid): array
     {
         /** @var User $user */
         $user = $this->userRepository->findOneBy(['steamId' => $steamid]);
@@ -175,18 +175,14 @@ class UserController extends AbstractController
             dd($matches);
         }
 
-
-        return $this->render(
-            'user/index.html.twig',
-            ['user' => $user]
-        );
+        return ['user' => $user];
     }
 
     /**
      * @param MatchUserScoreboard[] $matchUserScoreBoards
      * @return array
      */
-    private function getStats(array $matchUserScoreBoards)
+    private function getStats(array $matchUserScoreBoards): array
     {
         $stats = [
             'adr' => ['complete' => 0, 'avg' => 0],
