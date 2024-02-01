@@ -6,30 +6,27 @@ namespace App\MessageHandler;
 
 use App\Message\SaveDemo;
 use App\Services\Demo;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Class SaveDemoHandler
  * @package App\MessageHandler
  */
-#[\Symfony\Component\Messenger\Attribute\AsMessageHandler]
-class SaveDemoHandler
+#[AsMessageHandler]
+readonly class SaveDemoHandler
 {
-    private Demo $demo;
-
     /**
      * SaveDemoHandler constructor.
      * @param Demo $demo
      */
-    public function __construct(Demo $demo)
+    public function __construct(private Demo $demo)
     {
-        $this->demo = $demo;
     }
 
     /**
      * @throws \Exception
      */
-    public function __invoke(SaveDemo $message)
+    public function __invoke(SaveDemo $message): void
     {
         $this->demo->saveDemo($message);
     }

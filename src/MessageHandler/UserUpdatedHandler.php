@@ -6,22 +6,26 @@ namespace App\MessageHandler;
 
 use App\Entity\User;
 use App\Message\UserUpdated;
+use App\Repository\UserRepository;
 use App\Services\UserStatistics;
 use Doctrine\ORM\EntityManagerInterface;
 use Steam\Command\User\GetFriendList;
 use Steam\Steam;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
-#[\Symfony\Component\Messenger\Attribute\AsMessageHandler]
+#[AsMessageHandler]
 readonly class UserUpdatedHandler
 {
     /**
      * UserUpdatedHandler constructor.
      * @param EntityManagerInterface $entityManager
+     * @param UserRepository $userRepository
      * @param UserStatistics $userStatistics
      * @param Steam $steam
      */
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private UserRepository $userRepository,
         private UserStatistics $userStatistics,
         private Steam $steam
     ) {
@@ -34,7 +38,7 @@ readonly class UserUpdatedHandler
     public function __invoke(UserUpdated $userUpdated): void
     {
         /** @var User $user */
-        $user = $this->entityManager->getRepository(User::class)->find($userUpdated->getUserId());
+        $user = $this->userRepository->find($userUpdated->getUserId());
         $date = new \DateTime();
         $date->modify('-1 Day');
         if ($user->getLastSteamUpdate() < $date) {
@@ -42,8 +46,7 @@ readonly class UserUpdatedHandler
             $this->userStatistics->getStats($user);
             $this->getFriends($user);
             $user->setLastSteamUpdate(new \DateTimeImmutable());
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            $this->userRepository->add($user);
         }
     }
 
@@ -57,17 +60,14 @@ readonly class UserUpdatedHandler
         if (!empty($request)) {
             foreach ($request["friendslist"]["friends"] as $friend) {
                 /** @var User $oFriend */
-                if (!$oFriend = $this->entityManager->getRepository(User::class)->findOneBy(
-                    ['steamId' => $friend["steamid"]]
-                )) {
+                if (!$oFriend = $this->userRepository->findOneBy(['steamId' => $friend["steamid"]])) {
                     $oFriend = new User($friend["steamid"]);
                 }
                 if (!$user->getMyFriends()->contains($oFriend) && !$user->getFriendsWithMe()->contains($oFriend)) {
                     $user->addFriend($oFriend);
                     $oFriend->addFriend($user);
-                    $this->entityManager->persist($user);
-                    $this->entityManager->persist($oFriend);
-                    $this->entityManager->flush();
+                    $this->userRepository->add($user);
+                    $this->userRepository->add($oFriend);
                 }
             }
 

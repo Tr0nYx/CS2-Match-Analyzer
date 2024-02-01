@@ -6,31 +6,24 @@ namespace App\MessageHandler;
 
 use App\Message\AnalyzeDemo;
 use App\Services\Demo;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
  * Class AnalyzeDemoHandler
  * @package App\MessageHandler
  */
-#[\Symfony\Component\Messenger\Attribute\AsMessageHandler]
-class AnalyzeDemoHandler
+#[AsMessageHandler]
+readonly class AnalyzeDemoHandler
 {
-    /**
-     * @var Demo
-     */
-    private $demo;
-
     /**
      * DownloadDemo constructor.
      * @param Demo $demo
      */
-    public function __construct(Demo $demo)
+    public function __construct(private Demo $demo)
     {
-        $this->demo = $demo;
     }
 
-    public function __invoke(AnalyzeDemo $message)
+    public function __invoke(AnalyzeDemo $message): void
     {
         $this->demo->AnalyzeDemo($message);
     }
