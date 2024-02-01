@@ -40,8 +40,7 @@ class CheckForVac extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|void
-     * @throws \Exception
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -59,18 +58,18 @@ class CheckForVac extends Command
             foreach ($bans["players"] as $checked) {
                 /** @var User $user */
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['steamId' => $checked["SteamId"]]);
-                $user->setVaccheck(new \Datetime());
+                $user->setVaccheck(new \DateTimeImmutable());
                 if ($checked["NumberOfGameBans"] == true && $user->getOwbanned() == false) {
-                    $start = new \DateTime();
+                    $start = new \DateTimeImmutable();
                     $datetime = $start->modify('-'.$checked["DaysSinceLastBan"].' Days');
                     $user->setOwBanned($datetime);
-                    $user->setRegisteredBanAt(new \DateTime());
+                    $user->setRegisteredBanAt(new \DateTimeImmutable());
                 }
                 if ($checked["VACBanned"] == true && $user->getVacbanned() == false) {
-                    $start = new \DateTime();
+                    $start = new \DateTimeImmutable();
                     $datetime = $start->modify('-'.$checked["DaysSinceLastBan"].' Days');
                     $user->setVacBanned($datetime);
-                    $user->setRegisteredBanAt(new \DateTime());
+                    $user->setRegisteredBanAt(new \DateTimeImmutable());
                 }
                 $this->entityManager->persist($user);
                 if (($i % 20) === 0) {
@@ -86,14 +85,3 @@ class CheckForVac extends Command
         return Command::SUCCESS;
     }
 }
-/**
- * 0 => array:7 [
- * "SteamId" => "76561198863921408"
- * "CommunityBanned" => false
- * "VACBanned" => true
- * "NumberOfVACBans" => 1
- * "DaysSinceLastBan" => 0
- * "NumberOfGameBans" => 0
- * "EconomyBan" => "none"
- * ]
- */

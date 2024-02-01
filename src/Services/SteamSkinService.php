@@ -14,7 +14,7 @@ readonly class SteamSkinService
     {
     }
 
-    public function getSkinPrice()
+    public function getSkinPrice(): void
     {
         $skin = $this->entityManager->getRepository(Skin::class)->findOneBy([], ['lastPriceCheck' => 'ASC']);
         if (str_contains($skin->getMarketHashName(), 'Graffiti') && !str_contains(
@@ -78,7 +78,7 @@ readonly class SteamSkinService
                     $this->importSkins($user, $items);
                 }
             }
-            $user->setLastInventoryUpdate(new \DateTime());
+            $user->setLastInventoryUpdate(new \DateTimeImmutable());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }

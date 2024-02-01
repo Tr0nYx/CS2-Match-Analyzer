@@ -237,9 +237,9 @@ class Matches
     }
 
     /**
-     * @param \DateTimeImmutable|null $matchTime
+     * @param \DateTimeImmutable $matchTime
      */
-    public function setMatchTime(?\DateTimeImmutable $matchTime): void
+    public function setMatchTime(\DateTimeImmutable $matchTime): void
     {
         $this->matchTime = $matchTime;
     }

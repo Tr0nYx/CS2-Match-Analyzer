@@ -129,15 +129,14 @@ readonly class UserStatistics
     /**
      * @param User $user
      * @param $appid
-     * @return UserAchievements
-     * @throws \Exception
+     * @return UserAchievements|null
      */
     private function getAchievementsForGame(User $user, $appid): ?UserAchievements
     {
         $playerAchievementRequest = new GetPlayerAchievements($user->getSteamId(), $appid);
         $playerAchievementRequest->setLanguage('german');
         $achievementRequest = $this->steam->run($playerAchievementRequest);
-        if ($achievementRequest["playerstats"]["success"] == false) {
+        if (!$achievementRequest["playerstats"]["success"]) {
             $user->setPersonastate(0);
             $this->entityManager->persist($user);
             $this->entityManager->flush();

@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Message\AnalyzeDemo;
 use App\Services\Demo;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -50,14 +51,14 @@ class AnalyzeDemoCommand extends Command
             return Command::SUCCESS;
         }
         if ($input->getOption('all')) {
-            $this->demo->AnalyzeDemo(new \App\Message\AnalyzeDemo('all'), $output);
+            $this->demo->AnalyzeDemo(new AnalyzeDemo('all'), $output);
 
             return Command::SUCCESS;
         }
         if ($input->getArgument('matchid') != null) {
-            $this->demo->AnalyzeDemo(new \App\Message\AnalyzeDemo($input->getArgument('matchid')), $output);
+            $this->demo->AnalyzeDemo(new AnalyzeDemo($input->getArgument('matchid')), $output);
         } else {
-            $this->demo->AnalyzeDemo(new \App\Message\AnalyzeDemo(null), $output);
+            $this->demo->AnalyzeDemo(new AnalyzeDemo(null), $output);
         }
         $this->release();
 

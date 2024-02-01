@@ -355,9 +355,8 @@ class JsonImporter
         $ADR = self::HLTV2_ADR_MOD * $player->adr;
         $Impact = self::HLTV2_IMPACT_MOD * ((self::HLTV2_IMPACT_KPR_MOD * $killPerRound) + (self::HLTV2_IMPACT_APR_MOD * $assistPerRound) + self::HLTV2_IMPACT_OFFSET_MOD);
         $HLTV2 = $KAST + $KPR + $DPR + $Impact + $ADR + self::HLTV2_OFFSET_MOD;
-        $roundedHltv = round($HLTV2, 3);
 
-        return $roundedHltv;
+        return round($HLTV2, 3);
     }
 
 

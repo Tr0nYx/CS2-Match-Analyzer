@@ -13,27 +13,27 @@ class SharecodeDecoder
     /**
      * @var string
      */
-    protected $shareCodePattern = '';
+    protected string $shareCodePattern = '';
 
     /**
      * @var string
      */
-    protected $dictionary = '';
+    protected string $dictionary = '';
 
     /**
      * @var int
      */
-    protected $dictionaryLength = 0;
+    protected int $dictionaryLength = 0;
 
     /**
      * @var string
      */
-    protected $cleanedShareCode = '';
+    protected string $cleanedShareCode = '';
 
     /**
      * @var array
      */
-    protected $reversedShareCodeArray = [];
+    protected array $reversedShareCodeArray = [];
 
     /**
      * @param string $shareCode
