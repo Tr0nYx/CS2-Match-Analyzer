@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    {% set v4complete = (1 - stats.lostv4.complete / (stats.wonv4.complete + stats.lostv4.complete)) * 100 %}
+    $(function () {
+        var v4Data        = {
+            labels: [
+                'lost',
+                'won'
+            ],
+            datasets: [
+                {
+                    data: [{{ 100 - v4complete|number_format(2) }}, {{ v4complete|number_format(2) }}],
+                    backgroundColor : ['#f56954', '#00a65a'],
+                }
+            ]
+        }
+        var v4pieChartCanvas = $('#4v1Chart').get(0).getContext('2d')
+        var v4pieData        = v4Data;
+        var pieOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(v4pieChartCanvas, {
+            type: 'pie',
+            data: v4pieData,
+            options: pieOptions
+        })
+    });
+</script>

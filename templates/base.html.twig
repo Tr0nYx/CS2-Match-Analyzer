@@ -1,0 +1,46 @@
+{% if app.user is not null and app.user.shadow %}
+    {% set shadowClass = ' ' ~ app.user.shadow %}
+{% else %}
+    {% set shadowClass = ' shadow' %}<!-- app.user.usersettings.shadow !-->
+{% endif %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block javascripts %}
+        {% block importmap %}
+            {{ importmap('app') }}
+        {% endblock %}
+    {% endblock %}
+</head>
+{% if app.user is not null %}
+<body class="sidebar-mini {{ app.user.skincolor }}-mode{% if app.user.sidebarexpand %} sidebar-collapse{% endif %} layout-{{ app.user.layout }}{% if app.user.smalltext %} text-sm{% endif %} bg-body-tertiary">
+{% else %}
+<body class="sidebar-mini layout-fixed text-sm bg-body-tertiary">
+{% endif %}
+<div class="wrapper">
+    {% include('menu/nav.html.twig') %}
+    {% include('menu/sidebar.html.twig') %}
+    <main class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="container-fluid">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

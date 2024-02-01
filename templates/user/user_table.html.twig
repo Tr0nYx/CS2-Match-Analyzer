@@ -1,0 +1,9 @@
+{% if user.steamusername is not null %}
+    <tr>
+        <td><img src="{{ user.avatar }}" alt="{{ user.steamusername }}" width="50" height="50"></td>
+        <td><a href="{{ path('user.detail',{'steamid':user.steamid}) }}">{{ user.steamusername }}</a></td>
+        <td><a href="{{ user.profileurl }}" target="_blank">{{ user.profileurl }}</a></td>
+        <td>{{ user.timecreated|date }}</td>
+        <td>{{ user.lastlogoff|date }}</td>
+    </tr>
+{% endif %}

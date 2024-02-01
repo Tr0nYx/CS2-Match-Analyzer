@@ -1,0 +1,98 @@
+<script type="text/javascript">
+    $(function () {
+        'use strict'
+
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold',
+            maxRotation: 0
+        }
+
+        var mode = 'index'
+        var intersect = false
+
+
+        var $hltvChart = $('#hltv-chart')
+        // eslint-disable-next-line no-unused-vars
+        var hltvChart = new Chart($hltvChart, {
+            data: {
+                labels: [{% apply spaceless %}
+                    {% for match in matches %}
+                    {% if match.hltv2rating is not null %}
+                    '{{ match.matches.matchTime|date('c') }}'{% if not loop.last %},{% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% endapply %}],
+                datasets: [{
+                    label: 'hltvrating',
+                    type: 'line',
+                    data: [
+                        {% for match in matches %}
+                        {% if match.hltv2rating is not null %}
+                        '{{ match.hltv2rating }}'{% if not loop.last %},{% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor     : 'rgba(60,141,188,0.9)',
+                    borderColor         : 'rgba(60,141,188,0.8)',
+                    pointRadius          : false,
+                    pointColor          : '#3b8bba',
+                    pointStrokeColor    : 'rgba(60,141,188,1)',
+                    pointHighlightFill  : '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    fill: false
+                    // pointHoverBackgroundColor: '#007bff',
+                    // pointHoverBorderColor    : '#007bff'
+                }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        // display: false,
+                        ticks: $.extend({
+                            beginAtZero: true,
+                            suggestedMax: 3
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display:true,
+                            labelString: 'Date'
+                        },
+                        type: 'time',
+                        time: {
+                            tooltipFormat:'DD.MM.YYYY HH:mm', // <- HERE
+                            displayFormats: {
+                                'millisecond':'DD.MM.YYYY HH:mm',
+                                'second': 'DD.MM.YYYY HH:mm',
+                                'minute': 'DD.MM.YYYY HH:mm',
+                                'hour': 'DD.MM.YYYY',
+                                'day': 'DD.MM.YYYY',
+                                'week': 'DD.MM.YYYY',
+                                'month': 'DD.MM.YYYY',
+                                'quarter': 'DD.MM.YYYY',
+                                'year': 'DD.MM.YYYY',
+                            }
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        })
+    });
+</script>

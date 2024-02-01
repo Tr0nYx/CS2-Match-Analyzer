@@ -1,0 +1,15 @@
+<div class="tab-pane fade" id="friends" role="tabpanel" aria-labelledby="home-tab">
+    <h2>Friends</h2>
+    <table class="table table-hover table-responsive">
+        <tr>
+            <td>Username</td>
+            <td>Avatar</td>
+            <td>ProfileUrl</td>
+            <td>Created</td>
+            <td>Last Online</td>
+        </tr>
+        {% for friend in player.myFriends %}
+            {% include 'user/user_table.html.twig' with {'user': friend} %}
+        {% endfor %}
+    </table>
+</div>

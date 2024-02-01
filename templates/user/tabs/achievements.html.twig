@@ -1,0 +1,18 @@
+<div class="tab-pane fade" id="achievements" role="tabpanel" aria-labelledby="stats-tab">
+    <h2>Achievements</h2>
+    <div class="card-columns">
+        {% for key,value in steamstats.achievements %}
+            {% if value is not empty and value is iterable %}
+                <div class="card p-3" style="width:12rem;">
+                    <img class="card-img-top" src="{{ asset('build/images/achievements/'~ key ~ '.jpg') }}"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ key }}</h5>
+                        <p class="card-text"><small class="text-muted">{{ value.date|date }}</small></p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {#<img src="{{ asset('build/images/achievements/'~ name ~ '.png') }}" alt="ACME logo">#}
+</div>

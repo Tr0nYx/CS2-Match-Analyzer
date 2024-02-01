@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    {% set vxcomplete = (1 - stats.lostvx.complete / (stats.wonvx.complete + stats.lostvx.complete)) * 100 %}
+    $(function () {
+        var vxData        = {
+            labels: [
+                'lost',
+                'won'
+            ],
+            datasets: [
+                {
+                    data: [{{ 100 - vxcomplete|number_format(2) }}, {{ vxcomplete|number_format(2) }}],
+                    backgroundColor : ['#f56954', '#00a65a'],
+                }
+            ]
+        }
+        var vxpieChartCanvas = $('#xv1Chart').get(0).getContext('2d')
+        var vxpieData        = vxData;
+        var pieOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(vxpieChartCanvas, {
+            type: 'pie',
+            data: vxpieData,
+            options: pieOptions
+        })
+    });
+</script>

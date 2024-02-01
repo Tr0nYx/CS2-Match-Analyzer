@@ -1,0 +1,28 @@
+<div class="card-header">
+    <h3 class="card-title">Latest Members</h3>
+
+    <div class="card-tools">
+        <span class="badge badge-danger">{{ newusers|length }} New Members</span>
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+<div class="card-body p-0">
+    <div class="row text-center m-1">
+        {% for user in newusers|slice(0, 8) %}
+            <div class="col-3 p-2">
+                <img src="{{ user.avatar }}" alt="User Image" class="img-fluid rounded-circle">
+                <a class="btn fw-bold fs-7 text-secondary text-truncate w-100 p-0"
+                   href="{{ path('user.detail',{'steamid':user.steamId}) }}">{{ user.steamusername }}</a>
+                <span class="users-list-date">{{ user.matches.0.matches.matchTime|ago }}</span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="card-footer text-center">
+    <a href="javascript:">View All Users</a>
+</div>

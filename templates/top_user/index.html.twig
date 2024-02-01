@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row">
+        {% for rating in ratings %}
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-1 mb-3">
+                <div class="card{{ shadowClass }} {% if rating.vacbanned is not empty and rating.owbanned is not empty %}bg-danger{% endif %}">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="{{ rating.avatar }}"
+                                 alt="User profile picture">
+                        </div>
+                        <div class="card-header border-transparent">
+                            <div class="row">
+                                <div class="col-8">
+                                    <p class="text-muted"><a
+                                                href="{{ path('user.detail',{'steamid':rating.steamId}) }}">{{ rating.steamusername }}</a>
+                                    </p>
+                                </div>
+                                <div class="col-4">
+                                    <p class="text-muted text-center">
+                                        {% set rank = rating.rank %}
+                                        {% include 'addons/rank.html.twig' with {'rank': rank} %}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th scope="col">Acc Since</th>
+                                        <td class="text-right">{{ rating.timecreated|ago }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; Rank</th>
+                                        {% set rank = rating.avgrank|number_format(0,'','') %}
+                                        <td class="text-right">{% include 'addons/rank.html.twig' with {'rank': rank, 'float':'right'} %}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; KD</th>
+                                        <td class="text-right">{{ rating.avgkd|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; ADR</th>
+                                        <td class="text-right">{{ rating.avgadr|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; HS-Rate</th>
+                                        <td class="text-right">{{ rating.avghspercent|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; HLTV-Rating</th>
+                                        <td class="text-right">{{ rating.avghltvrating|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; Kills</th>
+                                        <td class="text-right">{{ rating.avgkills|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; MVPs</th>
+                                        <td class="text-right">{{ rating.avgmvps|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; Deaths</th>
+                                        <td class="text-right">{{ rating.avgdeaths|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">&#8709; Assists</th>
+                                        <td class="text-right">{{ rating.avgassists|round(2) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">VAC/OW Status</th>
+                                        <td class="text-right">{% if rating.vacbanned is empty and rating.owbanned is empty %}<span class="text-success">clean</span>{% else %}<span class="text-dange">banned</span>{% endif %}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'menu/breadcrumb.html.twig' with {'text': match.matchTime|date ~ ' ' ~ match.tickrate ~ 'Tick'} %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card{{ shadowClass }} mb-2">
+                <div class="card-header">
+                    <h3 class="card-title">{{ match.map }} {{ match.matchTime|ago }}</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-sm-3">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Result</span>
+                                    <span class="info-box-number text-center text-muted mb-0">{{ match.teamOne }}:{{ match.teamTwo }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Time</span>
+                                    <span class="info-box-number text-center text-muted mb-0">{{ match.matchTime|date }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    <span class="info-box-text text-center text-muted">Matchlength</span>
+                                    <span class="info-box-number text-center text-muted mb-0">{{ match.length|date("%I:%S") }} minutes</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3">
+                            <div class="info-box bg-light">
+                                <div class="info-box-content">
+                                    {% set rankavg = 0 %}
+                                    {% set sumrank = 0 %}
+                                    {% set usercount = 0 %}
+                                    {% for user in match.scoreboard %}
+                                        {% if user.rank > 0 %}
+                                            {% set sumrank = sumrank + user.rank %}
+                                            {% set usercount = usercount +1 %}
+                                        {% endif %}
+                                    {% endfor %}
+									{% if usercount > 0 %}
+                                    {% set rankavg = sumrank / usercount %}
+                                    {% set rankavg = rankavg|number_format(0,'','') %}
+                                    {% if rankavg == 0 %}
+                                        {% set rank = "" %}
+                                    {% elseif rankavg < 5000 %}
+                                        {% set rank = "common" %}
+                                    {% elseif rankavg < 10000 %}
+                                        {% set rank = "uncommon" %}
+                                    {% elseif rankavg < 15000 %}
+                                        {% set rank = "rare" %}
+                                    {% elseif rankavg < 20000 %}
+                                        {% set rank = "mythical" %}
+                                    {% elseif rankavg < 25000 %}
+                                        {% set rank = "legendary" %}
+                                    {% elseif rankavg < 30000 %}
+                                        {% set rank = "ancient" %}
+                                    {% elseif rankavg < 35000 %}
+                                        {% set rank = "unusual" %}
+                                    {% endif %}
+                                    {% set rankreverse = rankavg|reverse %}
+                                    {% set lastdigits = rankreverse[:3]|reverse %}
+                                    {% set firstdigits = rankreverse[3:5]|reverse %}
+                                    <span class="info-box-text text-center text-muted">AVG Rank</span>
+                                    <span class="info-box-number text-center text-muted mb-0">
+                                        {% if rankavg > 20 %}
+                                            <div class="rating {{ rank }}"
+                                                 style="background-image:url({{ asset('build/images/ranks/rating.'~ rank ~ '.png') }})">
+                                                    <span>{{ firstdigits }}<small>,{{ lastdigits }}</small></span>
+                                            </div>
+                                        {% else %}
+                                            {% set sumrank = 0 %}
+                                            {% for user in match.scoreboard %}
+                                                {% set sumrank = sumrank + user.rank %}
+                                            {% endfor %}
+                                            {% set rankavg = sumrank / match.scoreboard|length %}
+                                            <div class="rating">
+                                                    <img class="rank"
+                                                         src="{{ asset('build/images/ranks/skillgroup'~ rankavg|round ~ '.png') }}"/>
+                                                </div>
+                                        {% endif %}
+                                    </span>
+									{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-primary card-tabs{{ shadowClass }}">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs justify-content-center" id="userTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="score-tab" data-toggle="tab" href="#score" role="tab"
+                               aria-controls="score"
+                               aria-selected="true">Score</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="heatmap-tab" data-toggle="tab" href="#heatmap" role="tab"
+                               aria-controls="heatmap"
+                               aria-selected="true">Heatmap</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="score" role="tabpanel"
+                             aria-labelledby="score-tab">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped"
+                                       id="matchTable">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Avatar</th>
+                                        <th>Name</th>
+                                        {% include 'addons/table_header.html.twig' %}
+                                        <th data-toggle="tooltip" data-placement="top" title="MVPs">
+                                            <ion-icon name="star"></ion-icon>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="{% if match.teamOne > match.teamTwo %}winner{% elseif match.teamOne < match.teamTwo %}looser{% endif %}">
+                                        <td rowspan="0" class="text-center">
+                                            <i class="fa-solid fa-trophy"></i>
+                                            <p>Team 1</p>
+                                            <p class="fs-1">{{ match.teamOne }}</p>
+                                        </td>
+                                    </tr>
+                                    {% for player in scoreboard|slice(0, 5) %}
+                                        <tr class="color-palette{% if app.user is same as player.user %} text-primary{% endif %}{% if app.user is not null and app.user.hasFriend(player.user) %} text-success{% endif %}{% if player.user.vacbanned or player.user.owbanned %} text-red{% endif %}">
+                                            <td>
+                                                {% if player.user.avatar is not null %}
+                                                    <img src="{{ player.user.avatar }}" height="25px" width="25px"
+                                                         class="img-circle elevation-2"/>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('user.detail',{'steamid':player.user.steamid}) }}"
+                                                   data-steamid="{{ player.user.steamid }}">{{ player.clantag }} {{ player.user.steamusername }}</a>
+                                            </td>
+                                            <td>
+                                                {% include 'addons/rank.html.twig' with {'rank': player.rank, 'oldRank': player.oldrank} %}
+                                            </td>
+                                            <td>
+                                                <span class="{% if player.rank > player.oldrank %}text-success{% elseif player.rank < player.oldrank %}text-danger{% endif %}">
+                                                    {{ player.rank - player.oldrank }}
+                                                </span>
+                                            </td>
+                                            {% include 'addons/table.html.twig' with {'player': player} %}
+                                            <td>{{ player.mvps }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    <tbody>
+                                    <tr class="{% if match.teamTwo > match.teamOne %}winner{% elseif match.teamTwo < match.teamOne %}looser{% endif %}">
+                                        <td rowspan="0" class="text-center">
+                                            <i class="fa-solid fa-trophy"></i>
+                                            <p>Team 2</p>
+                                            <p class="fs-1">{{ match.teamTwo }}</p>
+                                        </td>
+                                    </tr>
+                                    {% for player in scoreboard|slice(5, 10) %}
+                                        <tr class="color-palette{% if app.user is same as player.user %} text-primary{% endif %}{% if app.user is not null and app.user.hasFriend(player.user) %} text-success{% endif %}{% if player.user.vacbanned or player.user.owbanned %} text-red{% endif %}">
+                                            <td>
+                                                {% if player.user.avatar is not null %}
+                                                    <img src="{{ player.user.avatar }}" height="25px" width="25px"
+                                                         class="img-circle elevation-2"/>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{{ path('user.detail',{'steamid':player.user.steamid}) }}"
+                                                   data-steamid="{{ player.user.steamid }}">{{ player.clantag }} {{ player.user.steamusername }}</a>
+                                            </td>
+                                            <td>{% include 'addons/rank.html.twig' with {'rank': player.rank, 'oldRank': player.oldrank} %}</td>
+                                            <td>
+                                                <span class="{% if player.rank > player.oldrank %}text-success{% elseif player.rank < player.oldrank %}text-danger{% endif %}">
+                                                    {{ player.rank - player.oldrank }}
+                                                </span>
+                                            </td>
+                                            {% include 'addons/table.html.twig' with {'player': player} %}
+                                            <td>{{ player.mvps }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="heatmap" role="tabpanel" aria-labelledby="heatmap-tab">
+                            <img src="{{ asset('media/heatmaps/' ~ match.id ~ '.jpg') }}" class="img-fluid"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('chart') }}
+    {{ encore_entry_script_tags('datatables') }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#matchTable').Datatables();
+        });
+    </script>
+{% endblock %}

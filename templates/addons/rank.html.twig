@@ -1,0 +1,53 @@
+{% if rank == 0 %}
+    {% set rankString = "" %}
+{% elseif rank < 5000 %}
+    {% set rankString = "common" %}
+{% elseif rank < 10000 %}
+    {% set rankString = "uncommon" %}
+{% elseif rank < 15000 %}
+    {% set rankString = "rare" %}
+{% elseif rank < 20000 %}
+    {% set rankString = "mythical" %}
+{% elseif rank < 25000 %}
+    {% set rankString = "legendary" %}
+{% elseif rank < 30000 %}
+    {% set rankString = "ancient" %}
+{% elseif rank < 35000 %}
+    {% set rankString = "unusual" %}
+{% endif %}
+{% set rankreverse = rank|reverse %}
+{% set lastdigits = rankreverse[:3]|reverse %}
+{% set firstdigits = rankreverse[3:5]|reverse %}
+{% if rank > 20 %}
+    <div class="rating {{ rankString }}{% if float is defined and 'right' in float %} float-right{% endif %}"
+         style="background-image:url({{ asset('build/images/ranks/rating.'~ rankString ~ '.png') }})">
+
+        <span>{{ firstdigits }}<small>,{{ lastdigits }}</small></span>
+        {% if oldRank is defined and oldRank > 0%}
+            <div class="rank-change">
+            {% if rank < oldRank %}
+                <i class="fas fa-angle-down"></i>
+            {% elseif rank > oldRank %}
+                <i class="fas fa-angle-up"></i>
+            {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+{% else %}
+    <div class="rating">
+        <img class="rank"
+             src="{{ asset('build/images/ranks/skillgroup'~ rank ~ '.png') }}" alt="{{ rank }}"
+             width="40"/>
+        {% if oldRank is defined and oldRank > 0 %}
+        <div class="rank-change">
+            {% if rank < oldRank %}
+                <i class="fas fa-angle-down"></i>
+            {% elseif rank > oldRank %}
+                <i class="fas fa-angle-up"></i>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+{% endif %}

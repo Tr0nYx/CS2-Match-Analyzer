@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TopInventoryController!{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% for inventory in inventories %}
+            <div class="col-xl-1 col-lg-3 col-md-4 col-sm-1 mb-3">
+                <div class="card{{ shadowClass }} {% if inventory.vacbanned is not empty and inventory.owbanned is not empty %}bg-danger{% endif %}">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle" src="{{ inventory.avatar }}"
+                                 alt="User profile picture">
+                        </div>
+                        <div class="card-header border-transparent">
+                            <div class="row">
+                                <p class="text-muted">
+                                    <a href="{{ path('user.detail',{'steamid':inventory.steamId}) }}">{{ inventory.steamusername }}</a>
+                                </p>
+                                <p class="text-muted">
+                                    {{ inventory.inventoryWorth }}€
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<td>{{ player.kills }}</td>
+<td>{{ player.assists }}</td>
+<td>{{ player.deaths }}</td>
+<td>{{ player.damage }}</td>
+<td>{{ player.kd|number_format(2) }}</td>
+<td>{{ player.adr|number_format(2) }}</td>
+<td>
+    {% set hspercent = player.hspercent / 100 %}
+    {{ hspercent|format_percent_number({rounding_mode: 'floor', fraction_digit: 2}) }}
+</td>
+<td>{{ player.firstkills }}</td>
+<td>{{ player.firstdeaths }}</td>
+<td>{{ player.tradekills }}</td>
+<td>{{ player.tradedeaths }}</td>
+<td>{{ player.tradefirstkills }}</td>
+<td>{{ player.tradefirstdeaths }}</td>
+<td>{{ player.roundswonv5 }}</td>
+<td>{{ player.roundswonv4 }}</td>
+<td>{{ player.roundswonv3 }}</td>
+<td>{{ player.roundswonv2 }}</td>
+<td>{{ player.roundswonv1 }}</td>
+<td>{{ player.rounds5k }}</td>
+<td>{{ player.rounds4k }}</td>
+<td>{{ player.rounds3k }}</td>
+<td>{{ player.rounds2k }}</td>
+<td>{{ player.killblinded }}</td>
+<td>{{ player.killwallbang }}</td>
+<td>{{ player.killsmoke }}</td>
+<td>{{ player.killnoscope }}</td>
+<td class="{% if player.hltvrating < 1 %}text-danger{% else %}text-success{% endif %}">{{ player.hltvrating|number_format(2) }}</td>
+<td class="{% if player.hltv2rating < 1 %}text-danger{% else %}text-success{% endif %}">{{ player.hltv2rating|number_format(2) }}</td>

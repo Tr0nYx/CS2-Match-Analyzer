@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'menu/breadcrumb.html.twig' with {'text': player.steamusername } %}
+    <div class="row">
+        <div class="col-md-3">
+            {% include 'user/profile.html.twig' with {'user': player} %}
+
+        </div>
+        <div class="col-md-9">
+            {% include 'user/clutches.html.twig' %}
+            <div class="row">
+                {% set cols = "col-2" %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<ion-icon name="game-controller-outline"></ion-icon>', 'text':'Matches', 'value':matches|length} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<ion-icon name="checkmark-outline"></ion-icon>', 'text':'&empty;Kills', 'value':stats.kills.avg|round(2)|default(0)} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<ion-icon name="close-outline"></ion-icon>', 'text':'&empty;Deaths', 'value':stats.deaths.avg|round(2)|default(0)} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<i class="fa-solid fa-gun"></i>', 'text':'ADR', 'value':stats.adr.avg|round(2)|default(0)} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<ion-icon name="swap-vertical-outline"></ion-icon>', 'text':'K/D', 'value':stats.kd.avg|round(2)|default(0)} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<i class="fa-solid fa-star"></i>', 'text':'HLTV', 'value':stats.hltv.avg|round(2)|default(0)} %}
+                {% include 'user/avgstats_box.html.twig' with {'icon':'<i class="fa-solid fa-star"></i>', 'text':'HLTV2', 'value':stats.hltv2.avg|round(2)|default(0)} %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            {% include 'user/user_avgstats_row.html.twig' %}
+            <div class="card card-primary card-tabs{{ shadowClass }}">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs justify-content-center" id="userTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="matches-tab" data-bs-toggle="tab"
+                                    data-bs-target="#matches" role="tab"
+                                    aria-controls="matches"
+                                    aria-selected="true">Matches
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="mates-tab" data-bs-toggle="tab" data-bs-target="#mates"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="false">Played
+                                With
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="friend-tab" data-bs-toggle="tab" data-bs-target="#friends"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="false">Friends
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="false">AllTime
+                                Stats
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="achievements-tab" data-bs-toggle="tab"
+                                    data-bs-target="#achievements"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="false">Achievements
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="myTabContent">
+                        {% include 'user/tabs/matches.html.twig' %}
+                        {% include 'user/tabs/playedwith.html.twig' %}
+                        {% include 'user/tabs/friends.html.twig' %}
+                        {% include 'user/tabs/alltimestats.html.twig' %}
+                        {% include 'user/tabs/achievements.html.twig' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#usermatches').Datatables();
+        });
+    </script>
+    {% include 'user/graphs/hltv.html.twig' %}
+    {% include 'user/graphs/adr.html.twig' %}
+    {% include 'user/graphs/kills.html.twig' %}
+    {% include 'user/graphs/1v1chart.html.twig' %}
+    {% include 'user/graphs/2v1chart.html.twig' %}
+    {% include 'user/graphs/3v1chart.html.twig' %}
+    {% include 'user/graphs/4v1chart.html.twig' %}
+    {% include 'user/graphs/5v1chart.html.twig' %}
+    {% include 'user/graphs/xv1chart.html.twig' %}
+{% endblock %}

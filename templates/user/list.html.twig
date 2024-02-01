@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <table class="table table-hover table-responsive">
+        <tr>
+            <td>Username</td>
+            <td>Avatar</td>
+            <td>ProfileUrl</td>
+            <td>Created</td>
+            <td>Last Online</td>
+        </tr>
+        {% for user in users %}
+            {% include 'user/user_table.html.twig' with {'user': user} %}
+        {% endfor %}
+    </table>
+{% endblock %}

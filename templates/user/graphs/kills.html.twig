@@ -1,0 +1,140 @@
+<script type="text/javascript">
+    $(function () {
+        'use strict'
+
+        var ticksStyle = {
+            fontColor: '#495057',
+            fontStyle: 'bold',
+            maxRotation: 0
+        }
+
+        var mode = 'index'
+        var intersect = false
+
+
+        var $killsChart = $('#kills-chart')
+        // eslint-disable-next-line no-unused-vars
+        var killsChart = new Chart($killsChart, {
+            data: {
+                labels: [{% apply spaceless %}
+                    {% for match in matches %}
+                    {% if match.adr is not null %}
+                    '{{ match.matches.matchTime|date('c') }}'{% if not loop.last %},{% endif %}
+                    {% endif %}
+                    {% endfor %}
+                    {% endapply %}],
+                datasets: [{
+                    label: 'kills',
+                    type: 'line',
+                    data: [
+                        {% for match in matches %}
+                        {% if match.kills is not null %}
+                        '{{ match.kills }}'{% if not loop.last %},{% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    ],
+                    backgroundColor: 'rgba(0,188,0,0.9)',
+                    borderColor: 'rgba(0,188,0,0.8)',
+                    pointRadius: false,
+                    pointColor: 'rgba(0,188,0,1)',
+                    pointStrokeColor: 'rgba(0,188,0,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(0,188,0,1)',
+                    fill: false
+                    // pointHoverBackgroundColor: '#007bff',
+                    // pointHoverBorderColor    : '#007bff'
+                },
+                    {
+                        label: 'deaths',
+                        type: 'line',
+                        data: [
+                            {% for match in matches %}
+                            {% if match.deaths is not null %}
+                            '{{ match.deaths }}'{% if not loop.last %},{% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(188,0,0,0.9)',
+                        borderColor: 'rgba(188,0,0,0.8)',
+                        pointRadius: false,
+                        pointColor: 'rgba(188,0,0,1)',
+                        pointStrokeColor: 'rgba(188,0,0,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(188,0,0,1)',
+                        fill: false
+                        // pointHoverBackgroundColor: '#007bff',
+                        // pointHoverBorderColor    : '#007bff'
+                    },
+                    {
+                        label: 'assists',
+                        type: 'line',
+                        data: [
+                            {% for match in matches %}
+                            {% if match.assists is not null %}
+                            '{{ match.assists }}'{% if not loop.last %},{% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        ],
+                        backgroundColor: 'rgba(255,255,0,0.9)',
+                        borderColor: 'rgba(255,255,0,0.8)',
+                        pointRadius: false,
+                        pointColor: 'rgba(255,255,0,1)',
+                        pointStrokeColor: 'rgba(255,255,0,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(255,255,0,1)',
+                        fill: false
+                        // pointHoverBackgroundColor: '#007bff',
+                        // pointHoverBorderColor    : '#007bff'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                tooltips: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                hover: {
+                    mode: mode,
+                    intersect: intersect
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        // display: false,
+                        ticks: $.extend({
+                            beginAtZero: true,
+                            suggestedMax: 3
+                        }, ticksStyle)
+                    }],
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        },
+                        type: 'time',
+                        time: {
+                            tooltipFormat: 'DD.MM.YYYY HH:mm', // <- HERE
+                            displayFormats: {
+                                'millisecond': 'DD.MM.YYYY',
+                                'second': 'DD.MM.YYYY',
+                                'minute': 'DD.MM.YYYY',
+                                'hour': 'DD.MM.YYYY',
+                                'day': 'DD.MM.YYYY',
+                                'week': 'DD.MM.YYYY',
+                                'month': 'DD.MM.YYYY',
+                                'quarter': 'DD.MM.YYYY',
+                                'year': 'DD.MM.YYYY',
+                            }
+                        },
+                        ticks: ticksStyle
+                    }]
+                }
+            }
+        })
+    });
+</script>

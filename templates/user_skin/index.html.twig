@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserSkinController!{% endblock %}
+
+{% block body %}
+    <div class="row row-cols-12 row-cols-lg-12 g-4">
+        {% for skin in skins %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if skin.image is not null %}
+                        <img src="https://community.cloudflare.steamstatic.com/economy/image/{{ skin.image }}" class="card-img-top" alt="{{ skin.marketName }}">
+                    {% endif %}
+                    <div class="card-header">
+                        <h5 class="card-title">{{ skin.marketName }}</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <p class="card-text">{{ skin.medianPrice }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

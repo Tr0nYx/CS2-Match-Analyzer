@@ -1,0 +1,90 @@
+<div class="card-header border-transparent">
+    <h3 class="card-title">Latest Matches</h3>
+
+    <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+            <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+<div class="card-body p-0">
+    <div class="table-responsive">
+        <table class="table m-0">
+            <thead>
+            <tr>
+                <th>Played</th>
+                <th>Map</th>
+                <th>AVG Rank</th>
+                <th>Result</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for match in latestmatches %}
+                <tr>
+                    {% set rankavg = 0 %}
+                    {% set sumrank = 0 %}
+                    {% set usercount = 0 %}
+                    {% for user in match.scoreboard %}
+                        {% if user.rank > 0 %}
+                            {% set sumrank = sumrank + user.rank %}
+                            {% set usercount = usercount +1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if usercount > 0 %}
+                        {% set rankavg = sumrank / usercount %}
+                        {% set rankavg = rankavg|number_format(0,'','') %}
+                        {% if rankavg == 0 %}
+                            {% set rank = "" %}
+                        {% elseif rankavg < 5000 %}
+                            {% set rank = "common" %}
+                        {% elseif rankavg < 10000 %}
+                            {% set rank = "uncommon" %}
+                        {% elseif rankavg < 15000 %}
+                            {% set rank = "rare" %}
+                        {% elseif rankavg < 20000 %}
+                            {% set rank = "mythical" %}
+                        {% elseif rankavg < 25000 %}
+                            {% set rank = "legendary" %}
+                        {% elseif rankavg < 30000 %}
+                            {% set rank = "ancient" %}
+                        {% elseif rankavg < 35000 %}
+                            {% set rank = "unusual" %}
+                        {% endif %}
+                        {% set rankreverse = rankavg|reverse %}
+                        {% set lastdigits = rankreverse[:3]|reverse %}
+                        {% set firstdigits = rankreverse[3:5]|reverse %}
+                    {% endif %}
+                    <td><a data-rankavg="{{ rankavg }}" data-sumrank="{{ sumrank }}"
+                           data-usercount="{{ usercount }}"
+                           href="{{ path('match.detail',{'match_id':match.id}) }}">{{ match.matchTime|ago }}</a>
+                    </td>
+                    <td>{{ match.map }}</td>
+                    <td>
+                        {% if rankavg > 20 %}
+                            <div class="rating {{ rank }}"
+                                 style="background-image:url({{ asset('build/images/ranks/rating.'~ rank ~ '.png') }})">
+
+                                <span>{{ firstdigits }}<small>,{{ lastdigits }}</small></span>
+                            </div>
+                        {% else %}
+                            {% set sumrank = 0 %}
+                            {% for user in match.scoreboard %}
+                                {% set sumrank = sumrank + user.rank %}
+                            {% endfor %}
+                            {% set rankavg = sumrank / match.scoreboard|length %}
+                            <div class="rating">
+                                <img class="rank"
+                                     src="{{ asset('build/images/ranks/skillgroup'~ rankavg|round ~ '.png') }}"/>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>{{ match.teamOne }}:{{ match.teamTwo }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+img {
+  &.rank {
+    max-height:30px;
+  }
+}
+tr {
+  &.winner {
+    > td {
+      border-right: 5px solid green !important;
+
+      > i, svg {
+        color: green !important;
+      }
+    }
+  }
+
+  &.looser {
+    > td {
+      border-right: 5px solid red !important;
+
+      > i, svg {
+        color: red !important;
+      }
+    }
+  }
+}
+
+.rating {
+  width: 70px;
+  height: 24px;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+  text-shadow: 0 1px 0 black;
+  font-weight: bold;
+  margin: auto;
+  position:relative;
+
+  .rank-change {
+    position:absolute;
+    right: -8px;
+  }
+
+  span {
+    transform: skew(-15deg);
+    small {
+      font-size: 12px !important;
+    }
+  }
+
+  &.unusual {
+    color: #FED700;
+  }
+
+  &.ancient {
+    color: #EB4B4B;
+  }
+
+  &.legendary {
+    color: #D22CE6;
+  }
+
+  &.mythical {
+    color: #8846FF;
+  }
+
+  &.rare {
+    color: #4B69FF;
+  }
+
+  &.uncommon {
+    color: #5E98D7;
+  }
+
+  &.common {
+    color: #B1C3D9;
+  }
+}

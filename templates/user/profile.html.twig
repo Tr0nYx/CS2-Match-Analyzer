@@ -1,0 +1,49 @@
+<div class="card card-primary mb-3 card-outline{{ shadowClass }}">
+    <div class="card-body box-profile">
+        <div class="text-center">
+            <img class="profile-user-img img-fluid img-circle" src="{{ player.avatar }}"
+                 alt="User profile picture">
+        </div>
+
+        <h3 class="profile-username text-center">{{ player.steamusername }}</h3>
+
+        {% if player.matches is not empty %}
+        <p class="text-muted text-center">
+            {% set lastRank = player.matches.0.rank %}
+            {% include 'addons/rank.html.twig' with {'rank': lastRank} %}
+        </p>
+        {% endif %}
+        <ul class="list-group list-group-unbordered mb-3">
+            {% if player.matches is not empty %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>Last Game</b> <a class="float-right">{{ player.matches.0.matches.matchTime|ago }}</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>Highest Rank</b>
+                {% set maxRank = 0 %}
+                {% for match in player.matches %}
+                    {% set maxRank = max(match.rank, maxRank) %}
+                {% endfor %}
+                {% include 'addons/rank.html.twig' with {'rank': maxRank} %}
+            </li>
+            {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>SteamAccount Created At:</b> <a class="float-right">{{ player.timecreated|date }}</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>SteamAccount Last LogOff</b> <a class="float-right">{{ player.lastlogoff|date }}</a>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>Friends</b> <a class="float-right">{{ player.myFriends|length }}</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>Steam Profile</b> <a class="float-right" target="_blank" href="https://steamcommunity.com/profiles/{{ player.steamId }}">{{ player.steamId }}</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <b>Inventory</b> <a class="float-right" target="_blank" href="{{ path('app_user_skin', {'user_steam_id': player.steamId}) }}">{{ player.steamId }}</a>
+            </li>
+
+        </ul>
+    </div>
+</div>

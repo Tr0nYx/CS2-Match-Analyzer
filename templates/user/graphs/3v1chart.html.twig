@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    {% set v3complete = (1 - stats.lostv3.complete / (stats.wonv3.complete + stats.lostv3.complete)) * 100 %}
+    $(function () {
+        var v3Data        = {
+            labels: [
+                'lost',
+                'won'
+            ],
+            datasets: [
+                {
+                    data: [{{ 100 - v3complete|number_format(2) }}, {{ v3complete|number_format(2) }}],
+                    backgroundColor : ['#f56954', '#00a65a'],
+                }
+            ]
+        }
+        var v3pieChartCanvas = $('#3v1Chart').get(0).getContext('2d')
+        var v3pieData        = v3Data;
+        var pieOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        new Chart(v3pieChartCanvas, {
+            type: 'pie',
+            data: v3pieData,
+            options: pieOptions
+        })
+    });
+</script>

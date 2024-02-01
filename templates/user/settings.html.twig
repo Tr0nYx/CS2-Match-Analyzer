@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card card-primary{{ shadowClass }}">
+                <div class="card-header">
+                    <h3 class="card-title">Quick Example</h3>
+                </div>
+                <div class="card-body">
+                    {% if user.steamKey is null %}
+                        To enable automatic match tracking please enter your game authentication code below.
+                        Valve has created a support page to help you create or access your game authentication code.
+                        <a href="https://help.steampowered.com/de/wizard/HelpWithGameIssue/?appid=730&issueid=128"
+                           target="_blank">Get your game authentication code</a>
+
+                        {{ form(form) }}
+                    {% else %}
+                        Last Match look up: {{ user.lastdemosearch|ago }}
+                        {{ form(form) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card card-primary{{ shadowClass }}">
+                <div class="card-header">
+                    <h3 class="card-title">Quick Example</h3>
+                </div>
+                <div class="card-body">
+                    {{ form(themeform) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
