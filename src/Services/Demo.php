@@ -120,7 +120,7 @@ class Demo implements LoggerAwareInterface
                 "MatchDirectory: ".$this->matchesDir.$oMatch->getId()." does not exist"
             );
         }
-        $process = new Process(['node', 'custom_assets/node/analyze-demo_refactor.js', $oMatch->getId()]);
+        $process = new Process(['node', 'custom_assets/node/analyze-demo.js', $oMatch->getId()]);
         $process->start();
         while ($process->isRunning()) {
         }
@@ -189,8 +189,8 @@ class Demo implements LoggerAwareInterface
         if (!empty($matches)) {
             $timestamp = (int)trim($matches[1]);
             $date = new \DateTimeImmutable();
-            $date->setTimestamp($timestamp);
-            $match->setMatchTime($date);
+            $matchTime = $date->setTimestamp($timestamp);
+            $match->setMatchTime($matchTime);
         }
         $sharecode = $this->sharecodeDecoder->decode($match->getShareCode());
         $match->setMatchId($sharecode['matchId']);
@@ -199,6 +199,7 @@ class Demo implements LoggerAwareInterface
                 $this->matchesDir.$match->getId().'.dem'
             ) > 0) {
             $match->setDownloaded(true);
+            $match->setCorrupt(false);
         } else {
             $match->setCorrupt(true);
             $this->entityManager->persist($match);
