@@ -110,7 +110,7 @@ class UserController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/user/{steamid}', name: 'user.detail', methods: ['GET', 'HEAD'])]
-    #[Cache(maxage: 3600, lastModified: 'user.getUpdatedAt()', etag: 'user.getLastDemoFound().getTimestamp()')]
+    #[Cache(maxage: 3600, lastModified: 'user.getUpdatedAt()', etag: 'user.getUpdatedAt().getTimestamp()')]
     #[Template('user/index.html.twig')]
     public function showUser(#[MapEntity(mapping: ['steamid' => 'steamId'])] User $user): array
     {
@@ -163,6 +163,7 @@ class UserController extends AbstractController
     /**
      * @param int $steamid
      * @return User[]
+     * @TODO
      */
     #[Route(path: '/user/{steamid}/matches', name: 'user.matches.detail', methods: ['GET', 'HEAD'])]
     #[Template('user/index.html.twig')]

@@ -24,8 +24,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('chart', './assets/chart.js')
-    .addEntry('datatables', './assets/datatables.js')
     //.addEntry('page2', './assets/page2.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
@@ -57,7 +55,7 @@ Encore
     // enables Sass/SCSS support
     .enableSassLoader()
     .copyFiles({
-        from: './assets/images',
+        from: './custom_assets/images',
 
         // optional target path, relative to the output dir
         to: 'images/[path][name].[ext]',

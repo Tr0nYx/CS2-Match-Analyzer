@@ -142,6 +142,7 @@ class User implements UserInterface
     public function __construct($steamId)
     {
         $this->steamId = $steamId;
+        $this->lastDemoFound = new \DateTimeImmutable();
         $this->friendsWithMe = new ArrayCollection();
         $this->myFriends = new ArrayCollection();
         $this->UserMatchAccuracyWeapons = new ArrayCollection();

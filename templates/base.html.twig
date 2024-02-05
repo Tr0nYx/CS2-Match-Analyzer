@@ -10,10 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{% block title %}Welcome!{% endblock %}</title>
     {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
         {% block importmap %}
             {{ importmap('app') }}
         {% endblock %}
     {% endblock %}
+
 </head>
 {% if app.user is not null %}
 <body class="sidebar-mini {{ app.user.skincolor }}-mode{% if app.user.sidebarexpand %} sidebar-collapse{% endif %} layout-{{ app.user.layout }}{% if app.user.smalltext %} text-sm{% endif %} bg-body-tertiary">

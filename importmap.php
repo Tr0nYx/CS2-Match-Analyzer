@@ -28,9 +28,6 @@ return [
     'jquery' => [
         'version' => '3.7.1',
     ],
-    'chart.js' => [
-        'version' => '4.4.1',
-    ],
     '@kurkle/color' => [
         'version' => '0.3.2',
     ],
@@ -53,5 +50,8 @@ return [
     ],
     'ionicons/dist/ionicons.js' => [
         'version' => '7.2.2',
+    ],
+    'chart.js/dist/chart.umd.js' => [
+        'version' => '4.4.1',
     ],
 ];

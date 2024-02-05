@@ -94,8 +94,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('chart') }}
-    <script type="text/javascript">
+    <script type="module">
+        import $ from 'jquery';
+        import 'chart.js/dist/chart.umd.js';
         $(function () {
             var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
 
