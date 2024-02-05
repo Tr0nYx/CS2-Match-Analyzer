@@ -1,4 +1,6 @@
-<script type="text/javascript">
+<script type="module">
+    import $ from 'jquery';
+    import 'chart.js/dist/chart.umd.js';
     {% set vxcomplete = (1 - stats.lostvx.complete / (stats.wonvx.complete + stats.lostvx.complete)) * 100 %}
     $(function () {
         var vxData        = {

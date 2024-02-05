@@ -1,5 +1,8 @@
-<script type="text/javascript">
-    {% set v2complete = (1 - stats.lostv2.complete / (stats.wonv2.complete + stats.lostv2.complete)) * 100 %}
+<script type="module">
+    import $ from 'jquery';
+    import 'chart.js/dist/chart.umd.js';
+    {% set complete = (stats.wonv2.complete and stats.lostv2.complete ? stats.wonv2.complete + stats.lostv2.complete : 1) %}
+    {% set v2complete = (1 - stats.lostv2.complete / complete) * 100 %}
     $(function () {
         var v2Data        = {
             labels: [

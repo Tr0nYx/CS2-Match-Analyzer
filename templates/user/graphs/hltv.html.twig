@@ -1,4 +1,6 @@
-<script type="text/javascript">
+<script type="module">
+    import $ from 'jquery';
+    import 'chart.js/dist/chart.umd.js';
     $(function () {
         'use strict'
 
@@ -19,7 +21,7 @@
                 labels: [{% apply spaceless %}
                     {% for match in matches %}
                     {% if match.hltv2rating is not null %}
-                    '{{ match.matches.matchTime|date('c') }}'{% if not loop.last %},{% endif %}
+                    '{{ match.matches.matchTime|date('d.m.Y H:i:s') }}'{% if not loop.last %},{% endif %}
                     {% endif %}
                     {% endfor %}
                     {% endapply %}],

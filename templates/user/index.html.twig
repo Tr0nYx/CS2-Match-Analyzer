@@ -75,11 +75,6 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#usermatches').Datatables();
-        });
-    </script>
     {% include 'user/graphs/hltv.html.twig' %}
     {% include 'user/graphs/adr.html.twig' %}
     {% include 'user/graphs/kills.html.twig' %}

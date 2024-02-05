@@ -9,7 +9,8 @@
                     <canvas id="1v1Chart"
                             style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 1084px;"
                             width="1626" height="375" class="chartjs-render-monitor"></canvas>
-                    {% set v1complete = (1 - stats.lostv1.complete / (stats.wonv1.complete + stats.lostv1.complete)) * 100 %}
+                    {% set complete = (stats.wonv1.complete and stats.lostv1.complete ? stats.wonv1.complete + stats.lostv1.complete : 1) %}
+                    {% set v1complete = (1 - stats.lostv1.complete / complete) * 100 %}
                     W:{{ stats.wonv1.complete }}/L:{{ stats.lostv1.complete }} ({{ v1complete|number_format(2) }}% WinRate)
 
                 </p>
@@ -25,7 +26,8 @@
                 <canvas id="2v1Chart"
                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 1084px;"
                         width="1626" height="375" class="chartjs-render-monitor"></canvas>
-                {% set v2complete = (1 - stats.lostv2.complete / (stats.wonv2.complete + stats.lostv2.complete)) * 100 %}
+                {% set complete = (stats.wonv2.complete and stats.lostv2.complete ? stats.wonv2.complete + stats.lostv2.complete : 1) %}        
+                {% set v2complete = (1 - stats.lostv2.complete / complete) * 100 %}
                 W:{{ stats.wonv2.complete }}/L:{{ stats.lostv2.complete }} ({{ v2complete|number_format(2) }}% WinRate)
             </div>
         </div>
@@ -39,7 +41,8 @@
                 <canvas id="3v1Chart"
                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 1084px;"
                         width="1626" height="375" class="chartjs-render-monitor"></canvas>
-                {% set v3complete = (1 - stats.lostv3.complete / (stats.wonv3.complete + stats.lostv3.complete)) * 100 %}
+                {% set complete = (stats.wonv3.complete and stats.lostv3.complete ? stats.wonv3.complete + stats.lostv3.complete : 1) %}    
+                {% set v3complete = (1 - stats.lostv3.complete / complete) * 100 %}
                 W:{{ stats.wonv3.complete }}/L:{{ stats.lostv3.complete }} ({{ v3complete|number_format(2) }}% WinRate)
             </div>
         </div>
@@ -54,7 +57,8 @@
                 <canvas id="4v1Chart"
                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 1084px;"
                         width="1626" height="375" class="chartjs-render-monitor"></canvas>
-                {% set v4complete = (1 - stats.lostv4.complete / (stats.wonv4.complete + stats.lostv4.complete)) * 100 %}
+                {% set complete = (stats.wonv4.complete and stats.lostv4.complete ? stats.wonv4.complete + stats.lostv4.complete : 1) %} 
+                {% set v4complete = (1 - stats.lostv4.complete / complete) * 100 %}
                 W:{{ stats.wonv4.complete }}/L:{{ stats.lostv4.complete }} ({{ v4complete|number_format(2) }}% WinRate)
             </div>
         </div>
@@ -68,7 +72,8 @@
                 <canvas id="5v1Chart"
                         style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 1084px;"
                         width="1626" height="375" class="chartjs-render-monitor"></canvas>
-                {% set v5complete = (1 - stats.lostv5.complete / (stats.wonv5.complete + stats.lostv5.complete)) * 100 %}
+                {% set complete = (stats.wonv5.complete and stats.lostv5.complete ? stats.wonv5.complete + stats.lostv5.complete : 1) %} 
+                {% set v5complete = (1 - stats.lostv5.complete / complete) * 100 %}
                 W:{{ stats.wonv5.complete }}/L:{{ stats.lostv5.complete }} ({{ v5complete|number_format(2) }}% WinRate)
             </div>
         </div>

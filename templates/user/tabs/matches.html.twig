@@ -11,7 +11,7 @@
             </tr>
             </thead>
             {# @var matches App\Entity\Matches[] #}
-            {% for match in matches %}
+            {% for match in matches|reverse %}
                 <tr>
                     <td>
                         <a href="{{ path("match.detail",{'match_id':match.matches.id}) }}">{{ match.matches.matchTime|ago }}</a>

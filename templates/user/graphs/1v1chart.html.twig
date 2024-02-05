@@ -1,5 +1,8 @@
-<script type="text/javascript">
-    {% set v1complete = (1 - stats.lostv1.complete / (stats.wonv1.complete + stats.lostv1.complete)) * 100 %}
+<script type="module">
+    import $ from 'jquery';
+    import 'chart.js/dist/chart.umd.js';
+    {% set complete = (stats.wonv1.complete and stats.lostv1.complete ? stats.wonv1.complete + stats.lostv1.complete : 1) %}
+    {% set v1complete = (1 - stats.lostv1.complete / complete) * 100 %}
     $(function () {
         var donutData        = {
             labels: [
