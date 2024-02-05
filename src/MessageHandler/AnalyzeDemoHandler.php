@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\MessageHandler;
-
 
 use App\Message\AnalyzeDemo;
 use App\Services\Demo;

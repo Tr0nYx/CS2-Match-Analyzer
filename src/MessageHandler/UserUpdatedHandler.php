@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\MessageHandler;
-
 
 use App\Entity\User;
 use App\Message\UserUpdated;

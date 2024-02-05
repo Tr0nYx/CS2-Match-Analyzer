@@ -2,7 +2,6 @@
 
 namespace App\SteamApi\Command\CSGOPlayers;
 
-
 use Steam\Command\CommandInterface;
 
 /**

@@ -18,9 +18,9 @@ readonly class SteamSkinService
     {
         $skin = $this->entityManager->getRepository(Skin::class)->findOneBy([], ['lastPriceCheck' => 'ASC']);
         if (str_contains($skin->getMarketHashName(), 'Graffiti') && !str_contains(
-                $skin->getMarketHashName(),
-                'Sealed'
-            )) {
+            $skin->getMarketHashName(),
+            'Sealed'
+        )) {
             $skin->setLastPriceCheck(new \DateTime());
             $this->entityManager->persist($skin);
             $this->entityManager->flush();
@@ -29,7 +29,7 @@ readonly class SteamSkinService
             return;
         }
         $url = 'https://steamcommunity.com/market/priceoverview/?appid='.$skin->getAppid(
-            ).'&market_hash_name='.$skin->getMarketHashName();
+        ).'&market_hash_name='.$skin->getMarketHashName();
         $request = $this->client->get($url);
         $result = json_decode($request->getBody()->getContents());
         if ($request->getStatusCode() !== 200) {

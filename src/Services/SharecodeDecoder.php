@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -85,7 +87,8 @@ class SharecodeDecoder
      */
     public function convertToHex(string $number): string
     {
-        $toHex = gmp_strval(gmp_init($number, 10), 16);;
+        $toHex = gmp_strval(gmp_init($number, 10), 16);
+        ;
 
         return $this->padStart($toHex, 36, '0');
 

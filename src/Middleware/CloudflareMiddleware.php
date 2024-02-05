@@ -14,12 +14,12 @@ class CloudflareMiddleware
     /**
      * WAIT_RESPONSE_CODE this is the response code which Cloudflare throws when UAM is active
      */
-    const WAIT_RESPONSE_CODE = 503;
+    public const WAIT_RESPONSE_CODE = 503;
 
     /**
      * SERVER_NAME name of the server which Cloudflare uses
      */
-    const SERVER_NAME = [
+    public const SERVER_NAME = [
         'cloudflare-nginx',
         'cloudflare',
     ];
@@ -27,7 +27,7 @@ class CloudflareMiddleware
     /**
      * REFRESH_EXPRESSION regular expression used to parse the 'Refresh' header
      */
-    const REFRESH_EXPRESSION = '/8;URL=(\/cdn-cgi\/l\/chk_jschl\?pass=[0-9]+\.[0-9]+-.*)/';
+    public const REFRESH_EXPRESSION = '/8;URL=(\/cdn-cgi\/l\/chk_jschl\?pass=[0-9]+\.[0-9]+-.*)/';
 
     /** @var callable */
     protected $nextHandler;

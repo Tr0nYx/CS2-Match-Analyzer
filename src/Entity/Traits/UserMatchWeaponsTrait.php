@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Entity\Traits;
-
 
 use App\Entity\Matches;
 use Doctrine\DBAL\Types\Types;

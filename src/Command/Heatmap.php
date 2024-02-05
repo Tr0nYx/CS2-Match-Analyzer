@@ -28,7 +28,7 @@ class Heatmap extends Command
             ['updatedAt' => 'ASC']
         );
         $command = '/usr/local/go/bin/go run assets/go/heatmap.go -demo assets/matches/heatmaps/'.$oMatch->getId(
-            ).'.dem > public/media/'.$oMatch->getId().'.jpg';
+        ).'.dem > public/media/'.$oMatch->getId().'.jpg';
         dd($command);
         $process = Process::fromShellCommandline($command);
         $process->start();
@@ -38,5 +38,5 @@ class Heatmap extends Command
 
         return Command::SUCCESS;
     }
-//go run heatmap.go - demo / path / to / demo.dem > out.jpg
+    //go run heatmap.go - demo / path / to / demo.dem > out.jpg
 }

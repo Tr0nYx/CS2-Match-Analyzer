@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Entity\Matches;
 use App\Entity\MatchUserScoreboard;
@@ -23,20 +21,20 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class JsonImporter
 {
-    const AVERAGE_KPR = 0.679; // average kills per round
-    const AVERAGE_SPR = 0.317; // average survived rounds per round
-    const AVERAGE_RMK = 1.277; // average value calculated from rounds with multiple kills
+    public const AVERAGE_KPR = 0.679; // average kills per round
+    public const AVERAGE_SPR = 0.317; // average survived rounds per round
+    public const AVERAGE_RMK = 1.277; // average value calculated from rounds with multiple kills
 
     // HTLV2 rating variables https://flashed.gg/posts/reverse-engineering-hltv-rating/
-    const HLTV2_KAST_MOD = 0.0073; // KAST modifier
-    const HLTV2_KPR_MOD = 0.3591; // KPR modifier
-    const HLTV2_DPR_MOD = -0.5329; // DPR modifier
-    const HLTV2_IMPACT_MOD = 0.2372; // Impact modifier
-    const HLTV2_IMPACT_KPR_MOD = 2.13; //Impact KPR modifier
-    const HLTV2_IMPACT_APR_MOD = 0.42; //Impact AssistPerRound modifier
-    const HLTV2_IMPACT_OFFSET_MOD = -0.41; //Impact base modifier
-    const HLTV2_ADR_MOD = 0.0032; // ADR modifier
-    const HLTV2_OFFSET_MOD = 0.1587; // HLTV2 base modifier
+    public const HLTV2_KAST_MOD = 0.0073; // KAST modifier
+    public const HLTV2_KPR_MOD = 0.3591; // KPR modifier
+    public const HLTV2_DPR_MOD = -0.5329; // DPR modifier
+    public const HLTV2_IMPACT_MOD = 0.2372; // Impact modifier
+    public const HLTV2_IMPACT_KPR_MOD = 2.13; //Impact KPR modifier
+    public const HLTV2_IMPACT_APR_MOD = 0.42; //Impact AssistPerRound modifier
+    public const HLTV2_IMPACT_OFFSET_MOD = -0.41; //Impact base modifier
+    public const HLTV2_ADR_MOD = 0.0032; // ADR modifier
+    public const HLTV2_OFFSET_MOD = 0.1587; // HLTV2 base modifier
 
     /**
      * @var string

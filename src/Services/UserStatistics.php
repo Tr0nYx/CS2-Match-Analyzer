@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Entity\User;
 use App\Entity\UserAchievements;
 use App\Entity\UserStatistic;
@@ -57,7 +56,8 @@ readonly class UserStatistics
         }*/
 
         foreach ($summaryRequest["response"]["players"] as $player) {
-            if (!$user = $this->entityManager->getRepository(User::class)->findOneBy(['steamId' => $player["steamid"]]
+            if (!$user = $this->entityManager->getRepository(User::class)->findOneBy(
+                ['steamId' => $player["steamid"]]
             )) {
                 $user = new User($player["steamid"]);
             }

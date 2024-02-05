@@ -30,7 +30,8 @@ class ThemeSettingsType extends AbstractType
                 'choices' => $this->getPossibleShadows(),
                 'label' => 'Website Schatten für Boxen',
             ])
-            ->add('save', SubmitType::class);;
+            ->add('save', SubmitType::class);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

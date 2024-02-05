@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\SteamApi\Command\InventoryService;
-
 
 use Steam\Command\CommandInterface;
 

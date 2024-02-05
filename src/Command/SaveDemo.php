@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace App\Command;
-
 
 use App\Services\Demo;
 use Symfony\Component\Console\Attribute\AsCommand;

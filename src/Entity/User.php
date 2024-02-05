@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-
 use App\Entity\Traits\IdTrait;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;

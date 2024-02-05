@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Utils;

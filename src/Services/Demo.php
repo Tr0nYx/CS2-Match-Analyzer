@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use App\Entity\Matches;
 use App\Entity\User;
@@ -177,11 +175,13 @@ class Demo implements LoggerAwareInterface
             $match = $this->entityManager->getRepository(Matches::class)->find($message->getMatchId());
         }
 
-        $process = new Process(['node', 'custom_assets/node/download-demo.js', $match->getShareCode(), $match->getId()],
+        $process = new Process(
+            ['node', 'custom_assets/node/download-demo.js', $match->getShareCode(), $match->getId()],
             $this->projectDir,
             null,
             null,
-            360);
+            360
+        );
         $process->mustRun();
         while ($process->isRunning()) {
         }
@@ -196,8 +196,8 @@ class Demo implements LoggerAwareInterface
         $match->setMatchId($sharecode['matchId']);
         $match->setOutcomeId($sharecode['outcomeId']);
         if (is_file($this->matchesDir.$match->getId().'.dem') && filesize(
-                $this->matchesDir.$match->getId().'.dem'
-            ) > 0) {
+            $this->matchesDir.$match->getId().'.dem'
+        ) > 0) {
             $match->setDownloaded(true);
             $match->setCorrupt(false);
         } else {
