@@ -10,7 +10,6 @@ use App\Entity\UserMatchAccuracyWeapons;
 use App\Entity\UserMatchDamageWeapons;
 use App\Entity\UserMatchHeadshotsWeapons;
 use App\Entity\UserMatchHitsWeapons;
-use App\Entity\UserMatchKillsWeapons;
 use App\Entity\UserMatchShotsWeapons;
 use App\Entity\UserSkin;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -209,7 +208,7 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    
+
     public function getAllUserAvgValues()
     {
         $qb = $this->createQueryBuilder('u');
@@ -243,6 +242,7 @@ class UserRepository extends ServiceEntityRepository
             ->addOrderBy('m.matchTime', 'DESC')
             ->addGroupBy('u.id')
             ->getQuery();
+
         return $query
             ->getResult();
     }
@@ -377,11 +377,13 @@ class UserRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('u');
 
         return $qb
-            ->select('u.id, u.avatar, u.steamusername, u.steamId, u.profileurl, u.vacbanned, u.owbanned, SUM(skin.lowestPrice) as inventoryWorth')
+            ->select(
+                'u.id, u.avatar, u.steamusername, u.steamId, u.profileurl, u.vacbanned, u.owbanned, SUM(skin.lowestPrice) as inventoryWorth'
+            )
             ->innerJoin(UserSkin::class, 'userskin', Join::WITH, 'userskin.User = u.id')
             ->innerJoin(Skin::class, 'skin', Join::WITH, 'skin.id = userskin.Skin')
             ->addGroupBy('u.id')
-            ->orderBy('inventoryWorth','DESC')
+            ->orderBy('inventoryWorth', 'DESC')
             ->getQuery()
             ->getResult();
     }

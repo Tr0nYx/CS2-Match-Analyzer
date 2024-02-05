@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Message\UserUpdated;
 use App\Repository\UserRepository;
 use App\Services\UserStatistics;
-use Doctrine\ORM\EntityManagerInterface;
 use Steam\Command\User\GetFriendList;
 use Steam\Steam;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -68,7 +67,6 @@ readonly class UserUpdatedHandler
                     $this->userRepository->add($oFriend);
                 }
             }
-
         }
     }
 }

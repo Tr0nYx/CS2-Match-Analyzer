@@ -4,7 +4,6 @@
 namespace App\Command;
 
 
-use App\Message\SearchDemo;
 use App\Services\Demo;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +23,7 @@ class DemoSearch extends Command
     /**
      * DemoSearch constructor.
      * @param MessageBusInterface $bus
+     * @param Demo $demo
      */
     public function __construct(private readonly MessageBusInterface $bus, private readonly Demo $demo)
     {

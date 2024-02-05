@@ -5,8 +5,8 @@ namespace App\Subscriber;
 use App\Entity\User;
 use Knojector\SteamAuthenticationBundle\Event\AuthenticateUserEvent;
 use Knojector\SteamAuthenticationBundle\Event\FirstLoginEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 readonly class FirstLoginSubscriber implements EventSubscriberInterface
 {
