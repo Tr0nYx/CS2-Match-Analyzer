@@ -18,13 +18,11 @@ readonly class UserUpdatedHandler
 {
     /**
      * UserUpdatedHandler constructor.
-     * @param EntityManagerInterface $entityManager
      * @param UserRepository $userRepository
      * @param UserStatistics $userStatistics
      * @param Steam $steam
      */
     public function __construct(
-        private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
         private UserStatistics $userStatistics,
         private Steam $steam
