@@ -24,7 +24,7 @@ class MatchUserScoreboardRepository extends ServiceEntityRepository
 
         return $qb
             ->join('m.matches', 'matches')
-            ->orderBy('matches.matchTime', 'DESC')
+            ->orderBy('matches.matchTime', 'ASC')
             ->where($qb->expr()->eq('m.user', ':userid'))
             ->andWhere($qb->expr()->neq('matches.saved', ':false'))
             ->setParameters(['userid' => $user->getId(), 'false' => false])
@@ -34,7 +34,8 @@ class MatchUserScoreboardRepository extends ServiceEntityRepository
 
     /**
      * @param $id
-     * @return array
+     * @return MatchUserScoreboard[]|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findByMatchIdSorted($id): array
     {
