@@ -72,32 +72,20 @@ readonly class SteamSkinService
         $date->sub(new \DateInterval('P1D'));
         $url = 'https://steamcommunity.com/inventory/'.$user->getSteamId().'/730/2';
         if ($user->getLastInventoryUpdate() < $date) {
-            dump($url);
             $request = $this->client->get($url);
-            dump($request->getStatusCode());
             if ($request->getStatusCode() === 200) {
                 $inventory = json_decode($request->getBody()->getContents());
                 if ($inventory !== null) {
                     $items = $inventory->descriptions;
                     $this->importSkins($user, $items);
                 }
+                $user->setLastInventoryUpdate(new \DateTimeImmutable());
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
             }
-            $user->setLastInventoryUpdate(new \DateTimeImmutable());
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
         }
 
         return $this->entityManager->getRepository(User::class)->getInventory($user);
-        /*
-        $file = file_get_contents(__DIR__.'/../../test.json');
-        $inventory = json_decode($file);
-        if ($inventory !== null) {
-            $items = $inventory->descriptions;
-            $this->importSkins($user, $items);
-        }
-
-        return $this->entityManager->getRepository(User::class)->getInventory($user);
-        */
     }
 
     /**
