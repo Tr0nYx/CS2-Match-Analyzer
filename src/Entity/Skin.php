@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: SkinRepository::class)]
-#[ORM\Cache]
+#[ORM\Cache('NONSTRICT_READ_WRITE')]
 class Skin
 {
     use IdTrait;

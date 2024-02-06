@@ -5,23 +5,27 @@ namespace App\Services;
 use App\Entity\Skin;
 use App\Entity\User;
 use App\Entity\UserSkin;
+use App\Repository\SkinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 
 readonly class SteamSkinService
 {
-    public function __construct(private EntityManagerInterface $entityManager, private Client $client)
-    {
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private Client $client,
+        private SkinRepository $skinRepository
+    ) {
     }
 
     public function getSkinPrice(): void
     {
-        $skin = $this->entityManager->getRepository(Skin::class)->findOneBy([], ['lastPriceCheck' => 'ASC']);
+        $skin = $this->skinRepository->findOneBy([], ['lastPriceCheck' => 'ASC']);
         if (str_contains($skin->getMarketHashName(), 'Graffiti') && !str_contains(
             $skin->getMarketHashName(),
             'Sealed'
         )) {
-            $skin->setLastPriceCheck(new \DateTime());
+            $skin->setLastPriceCheck(new \DateTimeImmutable());
             $this->entityManager->persist($skin);
             $this->entityManager->flush();
             echo "unsealed graffiti";
@@ -33,7 +37,7 @@ readonly class SteamSkinService
         $request = $this->client->get($url);
         $result = json_decode($request->getBody()->getContents());
         if ($request->getStatusCode() !== 200) {
-            $skin->setLastPriceCheck(new \DateTime());
+            $skin->setLastPriceCheck(new \DateTimeImmutable());
             $this->entityManager->persist($skin);
             $this->entityManager->flush();
 
@@ -45,14 +49,14 @@ readonly class SteamSkinService
         } else {
             if (isset($result->lowest_price)) {
                 $lowestPrice = substr($result->lowest_price, 1, strlen($result->lowest_price) - 1);
-                $skin->setLowestPrice($lowestPrice);
+                $skin->setLowestPrice((float)$lowestPrice);
             }
             if (isset($result->median_price)) {
                 $medianPrice = substr($result->median_price, 1, strlen($result->median_price) - 1);
-                $skin->setMedianPrice($medianPrice);
+                $skin->setMedianPrice((float)$medianPrice);
             }
         }
-        $skin->setLastPriceCheck(new \DateTime());
+        $skin->setLastPriceCheck(new \DateTimeImmutable());
         $this->entityManager->persist($skin);
         $this->entityManager->flush();
     }
@@ -104,7 +108,7 @@ readonly class SteamSkinService
     private function importSkins($user, $items): void
     {
         foreach ($items as $item) {
-            if (!$skin = $this->entityManager->getRepository(Skin::class)->findOneBy(
+            if (!$skin = $this->skinRepository->findOneBy(
                 ['classid' => $item->classid, 'instanceid' => $item->instanceid]
             )) {
                 $skin = new Skin();
