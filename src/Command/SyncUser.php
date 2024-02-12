@@ -19,6 +19,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class SyncUser extends Command
 {
     use LockableTrait;
+    public const MAX_USERS = 100;
 
     /**
      * SyncUser constructor.
@@ -44,7 +45,7 @@ class SyncUser extends Command
     {
         $steamIds = [];
         /** @var User[] $users */
-        $users = $this->entityManager->getRepository(User::class)->findNotSynced(100);
+        $users = $this->entityManager->getRepository(User::class)->findNotSynced(self::MAX_USERS);
         foreach ($users as $user) {
             //$userUpdated = new UserUpdated($user->getId());
             //$this->bus->dispatch($userUpdated);

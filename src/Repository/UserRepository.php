@@ -24,6 +24,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    public const LATEST_USERS = 10;
+
     /**
      * @var \Doctrine\ORM\QueryBuilder
      */
@@ -165,7 +167,7 @@ class UserRepository extends ServiceEntityRepository
             ->innerJoin(MatchUserScoreboard::class, 'mus', Join::WITH, 'mus.user = u.id')
             ->where($qb->expr()->isNotNull('u.avatar'))
             ->addOrderBy('u.createdAt', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(self::LATEST_USERS)
             ->getQuery()
             ->getResult();
     }

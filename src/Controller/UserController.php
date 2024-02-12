@@ -91,7 +91,8 @@ class UserController extends AbstractController
         $steamIds = [];
         $users = $this->userRepository->findAll();
         foreach ($users as $user) {
-            if (($user->getCommunityvisibilitystate() === 3 && $user->getUpdatedAt() < new \DateTime('-24 hours'))
+            if (($user->getCommunityvisibilitystate() === UserStatistics::PROFILE_VISIBILITY && $user->getUpdatedAt(
+            ) < new \DateTime('-24 hours'))
                 || null === $user->getCommunityvisibilitystate()) {
                 $steamIds[] = $user->getSteamId();
                 $userstats = $this->userStatistics->getStats($user);

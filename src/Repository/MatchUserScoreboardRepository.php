@@ -11,6 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class MatchUserScoreboardRepository extends ServiceEntityRepository
 {
+    public const LATEST_MATCHES = 10;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, MatchUserScoreboard::class);
@@ -32,8 +33,7 @@ class MatchUserScoreboardRepository extends ServiceEntityRepository
 
     /**
      * @param $id
-     * @return MatchUserScoreboard[]|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return array
      */
     public function findByMatchIdSorted($id): array
     {
@@ -44,7 +44,7 @@ class MatchUserScoreboardRepository extends ServiceEntityRepository
             ->where('m.id = :id')
             ->addOrderBy('mus.side', 'DESC')
             ->addOrderBy('mus.damage', 'DESC')
-            ->setMaxResults(10)
+            ->setMaxResults(self::LATEST_MATCHES)
             ->setParameters(['id' => $id])
             ->getQuery()
             ->getResult();

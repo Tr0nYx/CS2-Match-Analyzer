@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Controller\UserController;
 use App\Entity\User;
 use App\Entity\UserAchievements;
 use App\Entity\UserStatistic;
@@ -17,6 +18,8 @@ use Steam\Steam;
  */
 readonly class UserStatistics
 {
+    public const PROFILE_VISIBILITY = 3;
+
     /**
      * UserStatistics constructor.
      * @param Steam $steam
@@ -72,7 +75,7 @@ readonly class UserStatistics
             $user->setPersonastate($player["personastate"]);
 
             $user->setProfileurl($player["profileurl"]);
-            if ($player["communityvisibilitystate"] == 3) {
+            if ($player["communityvisibilitystate"] == self::PROFILE_VISIBILITY) {
                 $timecreated = new \DateTimeImmutable();
                 $timecreated = $timecreated->setTimestamp($player["timecreated"]);
                 $user->setTimecreated($timecreated);

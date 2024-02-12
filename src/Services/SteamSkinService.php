@@ -8,6 +8,7 @@ use App\Entity\UserSkin;
 use App\Repository\SkinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Response;
 
 readonly class SteamSkinService
 {
@@ -36,7 +37,7 @@ readonly class SteamSkinService
         ).'&market_hash_name='.$skin->getMarketHashName();
         $request = $this->client->get($url);
         $result = json_decode($request->getBody()->getContents());
-        if ($request->getStatusCode() !== 200) {
+        if ($request->getStatusCode() !== Response::HTTP_OK) {
             $skin->setLastPriceCheck(new \DateTimeImmutable());
             $this->entityManager->persist($skin);
             $this->entityManager->flush();
@@ -73,7 +74,7 @@ readonly class SteamSkinService
         $url = 'https://steamcommunity.com/inventory/'.$user->getSteamId().'/730/2';
         if ($user->getLastInventoryUpdate() < $date) {
             $request = $this->client->get($url);
-            if ($request->getStatusCode() === 200) {
+            if ($request->getStatusCode() === Response::HTTP_OK) {
                 $inventory = json_decode($request->getBody()->getContents());
                 if ($inventory !== null) {
                     $items = $inventory->descriptions;

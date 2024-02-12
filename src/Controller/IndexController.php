@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class IndexController extends AbstractController
 {
+    public const MAX_MATCHES = 10;
     /**
      * @param UserRepository $userRepository
      * @param MatchRepository $matchRepository
@@ -54,7 +55,7 @@ class IndexController extends AbstractController
         $latestMatches = $this->matchRepository->findBy(
             ['saved' => true],
             ['matchTime' => 'DESC'],
-            10
+            self::MAX_MATCHES
         );
 
         return ['latestmatches' => $latestMatches];
